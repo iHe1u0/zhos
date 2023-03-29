@@ -8,7 +8,7 @@
 PRODUCT_NAME = os
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.zhos.os
+PRODUCT_BUNDLE_IDENTIFIER = net.zhos.os
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.zhos. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 net.zhos. All rights reserved.
