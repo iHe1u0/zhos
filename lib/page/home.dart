@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:os/data/item_data.dart';
+import 'package:os/const/server.dart';
+import 'package:os/data/latest_topic_item.dart';
+import 'package:os/utils/network_utils.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -26,21 +30,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // fake data >.<
-  final List<String> items = List<String>.generate(3, (i) => '$i');
-  final List<ItemData> urls = [];
+  List<String> items = List<String>.generate(3, (i) => '$i');
+  // Real data for home_page
 
   @override
   Widget build(BuildContext context) {
-    for (var element in items) {
-      urls.add(ItemData("title_$element", element));
-    }
     return MaterialApp(
       title: "操作系统论坛",
       home: Scaffold(
         appBar: AppBar(),
         body: Scaffold(
           body: ListView.builder(
-            itemCount: urls.length,
+            itemCount: 0,
             itemBuilder: (context, index) {
               return ListTile(
                 leading: CircleAvatar(
@@ -49,17 +50,15 @@ class _HomePageState extends State<HomePage> {
                       'https://zhos.net/uploads/default/original/1X/0248e539779413624e75ce3f2584a620f7754f04.png'),
                 ),
                 title: Text('Item ${items[index]}'),
-                subtitle: Text(urls[index].title),
+                subtitle: Text("urls[index].title"),
                 trailing: Icon(Icons.more_vert),
                 onTap: () {
-                  debugPrint(urls[index].url);
                 },
               );
             },
           ).build(context),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              urls.add(ItemData("title", "url"));
               onPressed();
             },
             child: const Icon(Icons.add),
@@ -69,7 +68,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onPressed() {
+  void onPressed() async {
     debugPrint("add new post");
+
+    NetworkUtils networkUtils = NetworkUtils.instance!;
+    var response = await networkUtils.get(ServerConfig.home);
+    if (response.statusCode == 200) {
+      var string = response.data.toString();
+      var data = jsonDecode(string);
+      
+      LatestTopicItem list = LatestTopicItem.fromJson(data);
+
+      debugPrint("${list['primary_groups']}");
+    } else {
+      debugPrint("error: ${response.statusCode}");
+    }
   }
 }
