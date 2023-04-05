@@ -1,44 +1,44 @@
-package net.zhos.os.bean
+package net.zhos.os.bean.category
 
-
-data class Site(
-    val anonymous_default_sidebar_tags: List<String> = listOf(),
-    val anonymous_top_menu_items: List<String> = listOf(),
+data class SiteInfo(
+    val anonymous_top_menu_items: List<Any> = listOf(),
     val archetypes: List<Archetype> = listOf(),
-    val auth_providers: List<AuthProvider> = listOf(),
+    val auth_providers: List<Any> = listOf(),
+    val can_associate_groups: Boolean = false,
     val can_create_tag: Boolean = false,
     val can_tag_pms: Boolean = false,
     val can_tag_topics: Boolean = false,
-    val categories: List<Category> = listOf(),
-    val censored_regexp: List<Any> = listOf(),
+    val categories: List<SiteInfoCategory> = listOf(),
+    val censored_regexp: List<CensoredRegexp> = listOf(),
     val custom_emoji_translation: CustomEmojiTranslation = CustomEmojiTranslation(),
     val default_archetype: String = "",
-    val default_dark_color_scheme: Any? = Any(),
-    val displayed_about_plugin_stat_groups: List<String> = listOf(),
-    val filters: List<String> = listOf(),
-    val groups: List<Any> = listOf(),
+    val default_dark_color_scheme: DefaultDarkColorScheme = DefaultDarkColorScheme(),
+    val displayed_about_plugin_stat_groups: List<Any> = listOf(),
+    val filters: List<Any> = listOf(),
+    val groups: List<Group> = listOf(),
     val hashtag_configurations: HashtagConfigurations = HashtagConfigurations(),
-    val hashtag_icons: List<String> = listOf(),
+    val hashtag_icons: List<Any> = listOf(),
     val markdown_additional_options: MarkdownAdditionalOptions = MarkdownAdditionalOptions(),
     val notification_types: NotificationTypes = NotificationTypes(),
-    val periods: List<String> = listOf(),
+    val periods: List<Any> = listOf(),
     val post_action_types: List<PostActionType> = listOf(),
     val post_types: PostTypes = PostTypes(),
     val show_welcome_topic_banner: Boolean = false,
     val tags_filter_regexp: String = "",
-    val top_menu_items: List<String> = listOf(),
-    val top_tags: List<String> = listOf(),
-    val topic_featured_link_allowed_category_ids: List<Int> = listOf(),
+    val top_menu_items: List<Any> = listOf(),
+    val top_tags: List<Any> = listOf(),
+    val topic_featured_link_allowed_category_ids: List<Any> = listOf(),
     val topic_flag_types: List<TopicFlagType> = listOf(),
     val trust_levels: TrustLevels = TrustLevels(),
     val uncategorized_category_id: Int = 0,
-    val user_color_schemes: List<Any> = listOf(),
+    val user_color_schemes: List<UserColorScheme> = listOf(),
     val user_field_max_length: Int = 0,
-    val user_fields: List<UserField> = listOf(),
+    val user_fields: List<Any> = listOf(),
     val user_themes: List<UserTheme> = listOf(),
-    val user_tips: UserTips = UserTips(),
-    val watched_words_link: Any? = Any(),
-    val watched_words_replace: Any? = Any()
+    val watched_words_link: String = "",
+    val watched_words_replace: String = "",
+    val whispers_allowed_groups_names: List<Any> = listOf(),
+    val wizard_required: Boolean = false
 )
 
 data class Archetype(
@@ -47,28 +47,16 @@ data class Archetype(
     val options: List<Any> = listOf()
 )
 
-data class AuthProvider(
-    val can_connect: Boolean = false,
-    val can_revoke: Boolean = false,
-    val custom_url: Any? = null,
-    val frame_height: Any? = null,
-    val frame_width: Any? = null,
-    val icon: String = "",
-    val name: String = "",
-    val pretty_name_override: Any? = null,
-    val title_override: Any? = null
-)
-
-data class Category(
+data class SiteInfoCategory(
     val allow_global_tags: Boolean = false,
     val allowed_tag_groups: List<Any> = listOf(),
-    val allowed_tags: List<String> = listOf(),
+    val allowed_tags: List<Any> = listOf(),
     val can_edit: Boolean = false,
     val color: String = "",
-    val custom_fields: CustomFields = CustomFields(),
+    val custom_fields: CustomFields? = null,
     val default_list_filter: String = "",
     val default_top_period: String = "",
-    val default_view: String? = null,
+    val default_view: String = "",
     val description: String = "",
     val description_excerpt: String = "",
     val description_text: String = "",
@@ -80,36 +68,44 @@ data class Category(
     val navigate_to_first_post_after_read: Boolean = false,
     val notification_level: Int = 0,
     val num_featured_topics: Int = 0,
-    val permission: Any? = null,
+    val parent_category_id: Int = 0,
+    val permission: Int = 0,
     val position: Int = 0,
     val post_count: Int = 0,
-    val read_only_banner: Any? = null,
+    val read_only_banner: String = "",
     val read_restricted: Boolean = false,
-    val required_tag_groups: List<Any> = listOf(),
+    val required_tag_groups: List<RequiredTagGroup> = listOf(),
     val show_subcategory_list: Boolean = false,
     val slug: String = "",
-    val sort_ascending: Any? = null,
-    val sort_order: String? = null,
+    val sort_ascending: String = "",
+    val sort_order: String = "",
     val subcategory_list_style: String = "",
     val text_color: String = "",
     val topic_count: Int = 0,
-    val topic_template: String? = null,
+    val topic_template: String = "",
     val topic_url: String = "",
-    val uploaded_background: Any? = null,
-    val uploaded_logo: Any? = null,
-    val uploaded_logo_dark: Any? = null
+    val uploaded_background: String = "",
+    val uploaded_logo: String = "",
+    val uploaded_logo_dark: String = ""
 )
+
+class CensoredRegexp
 
 class CustomEmojiTranslation
 
-data class HashtagConfigurations(
-    val chat_composer: List<String> = listOf(),
-    val topic_composer: List<String> = listOf()
+class DefaultDarkColorScheme
+
+data class Group(
+    val flair_bg_color: String = "",
+    val flair_color: String = "",
+    val flair_url: String = "",
+    val id: Int = 0,
+    val name: String = ""
 )
 
-data class MarkdownAdditionalOptions(
-    val chat: Chat = Chat()
-)
+class HashtagConfigurations
+
+class MarkdownAdditionalOptions
 
 data class NotificationTypes(
     val assigned: Int = 0,
@@ -157,11 +153,11 @@ data class NotificationTypes(
 
 data class PostActionType(
     val description: String = "",
-    val id: Int? = null,
+    val id: Int = 0,
     val is_custom_flag: Boolean = false,
     val is_flag: Boolean = false,
     val name: String = "",
-    val name_key: String? = null,
+    val name_key: String = "",
     val short_description: String = ""
 )
 
@@ -174,11 +170,11 @@ data class PostTypes(
 
 data class TopicFlagType(
     val description: String = "",
-    val id: Int? = null,
+    val id: Int = 0,
     val is_custom_flag: Boolean = false,
     val is_flag: Boolean = false,
     val name: String = "",
-    val name_key: String? = null,
+    val name_key: String = "",
     val short_description: String = ""
 )
 
@@ -190,40 +186,22 @@ data class TrustLevels(
     val regular: Int = 0
 )
 
-data class UserField(
-    val description: String = "",
-    val editable: Boolean = false,
-    val field_type: String = "",
+data class UserColorScheme(
     val id: Int = 0,
-    val name: String = "",
-    val position: Int = 0,
-    val required: Boolean = false,
-    val searchable: Boolean = false,
-    val show_on_profile: Boolean = false,
-    val show_on_user_card: Boolean = false
+    val is_dark: Boolean = false,
+    val name: String = ""
 )
 
 data class UserTheme(
-    val color_scheme_id: Int? = null,
+    val color_scheme_id: Int = 0,
     val default: Boolean = false,
     val name: String = "",
     val theme_id: Int = 0
 )
 
-data class UserTips(
-    val first_notification: Int = 0,
-    val post_menu: Int = 0,
-    val suggested_topics: Int = 0,
-    val topic_notification_levels: Int = 0,
-    val topic_timeline: Int = 0
-)
+class CustomFields
 
-data class CustomFields(
-    val has_chat_enabled: Any? = null
-)
-
-data class Chat(
-    val hashtag_configurations: HashtagConfigurations = HashtagConfigurations(),
-    val limited_pretty_text_features: List<String> = listOf(),
-    val limited_pretty_text_markdown_rules: List<String> = listOf()
+data class RequiredTagGroup(
+    val min_count: Int = 0,
+    val name: String = ""
 )

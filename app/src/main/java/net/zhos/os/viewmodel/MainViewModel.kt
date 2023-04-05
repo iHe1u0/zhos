@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import net.zhos.os.bean.Latest
+import net.zhos.os.bean.topic.LatestTopic
 import net.zhos.os.data.HomeItem
 import net.zhos.os.network.ApiService
 import net.zhos.os.utils.RetrofitFactory
@@ -24,8 +24,8 @@ class MainViewModel : ViewModel() {
     val uiState: StateFlow<List<HomeItem>> = _uiState.asStateFlow()
 
     fun refreshTopicList() {
-        service.getLatestTopic().enqueue(object : Callback<Latest> {
-            override fun onResponse(call: Call<Latest>, response: Response<Latest>) {
+        service.getLatestTopic().enqueue(object : Callback<LatestTopic> {
+            override fun onResponse(call: Call<LatestTopic>, response: Response<LatestTopic>) {
                 val list = mutableListOf<HomeItem>()
                 response.body()?.topic_list?.topics?.forEach { topic ->
                     list.add(
@@ -41,7 +41,7 @@ class MainViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<Latest>, t: Throwable) {
+            override fun onFailure(call: Call<LatestTopic>, t: Throwable) {
                 t.printStackTrace()
             }
         })
