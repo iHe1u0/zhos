@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:os/const/server.dart';
+import 'package:os/config/server.dart';
 
 class NetworkUtils {
   factory NetworkUtils() => _getInstance();
 
-  static NetworkUtils? get instance => _getInstance();
+  static NetworkUtils get instance => _getInstance();
   static NetworkUtils? _instance;
 
   late Dio _dio;
